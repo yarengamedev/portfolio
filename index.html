@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yaren Yılmaz — Game Developer · Unity &amp; Roblox</title>
+<meta name="description" content="Portfolio of Yaren Yılmaz, Game Developer at PARS Game. 6+ years in Unity and Roblox Studio, 15+ games built — real-time multiplayer, mobile, C#, Lua, C++." />
+<meta property="og:title" content="Yaren Yılmaz — Game Developer · Unity &amp; Roblox" />
+<meta property="og:description" content="Game Developer at PARS Game · Unity & Roblox Studio · 6+ years, 15+ games, real-time multiplayer." />
+<meta property="og:image" content="assets/fluffyone.jpeg" />
+<meta name="theme-color" content="#07070b" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#07070b; --text:#f3f3f7; --text-2:#b8b8c6; --muted:#7c7c8c;
+    --glass:rgba(16,16,24,.52); --glass-2:rgba(255,255,255,.04); --stroke:rgba(255,255,255,.09); --stroke-2:rgba(255,255,255,.16);
+    /* live ambient palette, written by JS as "r,g,b" */
+    --a1:255,154,107; --a2:122,92,199; --a3:43,63,122;
+    --radius:24px; --max:1200px; --ease:cubic-bezier(.2,.7,.2,1);
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;background:transparent}
+  img,video{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:rgba(var(--a1),.45);color:#fff}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  h1,h2,h3,h4{font-family:'Bricolage Grotesque',sans-serif;letter-spacing:-.03em;line-height:1.02;font-weight:700}
+  .mono{font-family:var(--mono)}
+
+  /* ambient background */
+  #bg{position:fixed;inset:0;width:100%;height:100%;z-index:-2;display:block}
+  .bg-fallback{position:fixed;inset:0;z-index:-3;background:
+    radial-gradient(60% 50% at 20% 20%,rgba(var(--a1),.35),transparent 70%),
+    radial-gradient(50% 50% at 80% 30%,rgba(var(--a2),.3),transparent 70%),
+    radial-gradient(60% 60% at 50% 90%,rgba(var(--a3),.35),transparent 70%),var(--bg)}
+  .grain{position:fixed;inset:-50%;z-index:-1;pointer-events:none;opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1s steps(6) infinite}
+  @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+  /* accent helpers */
+  .grad{background:linear-gradient(100deg,rgb(var(--a1)) 0%,rgb(var(--a2)) 50%,rgb(var(--a1)) 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 6s linear infinite}
+  @keyframes sheen{to{background-position:-200% 0}}
+
+  /* nav */
+  .nav{position:fixed;inset:0 0 auto;z-index:50;transition:background .4s,box-shadow .4s,backdrop-filter .4s}
+  .nav.scrolled{background:rgba(7,7,11,.55);backdrop-filter:blur(18px) saturate(150%);box-shadow:0 1px 0 var(--stroke)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .logo{display:flex;align-items:center;gap:12px;font-family:'Bricolage Grotesque';font-weight:700;font-size:19px}
+  .logo img{width:38px;height:38px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 22px rgba(var(--a1),.55)}
+  .nav ul{display:flex;gap:32px;list-style:none;font-size:15px;color:var(--text-2);font-weight:500}
+  .nav ul a{transition:color .2s}
+  .nav ul a:hover{color:#fff}
+  .btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;font-weight:600;font-size:15px;white-space:nowrap;cursor:pointer;border:0;font-family:inherit;transition:transform .25s var(--ease),box-shadow .3s,background .3s}
+  .btn svg{width:17px;height:17px;flex:none}
+  .btn-main{background:#fff;color:#0b0b10;box-shadow:0 10px 40px -10px rgba(var(--a1),.7)}
+  .btn-main:hover{box-shadow:0 14px 50px -8px rgba(var(--a1),.95)}
+  .btn-glass{background:rgba(255,255,255,.06);color:#fff;box-shadow:inset 0 0 0 1px var(--stroke-2);backdrop-filter:blur(10px)}
+  .btn-glass:hover{background:rgba(255,255,255,.12)}
+  .nav .btn{padding:10px 18px;font-size:14px}
+
+  /* hero */
+  .hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px}
+  .hero-grid{display:grid;grid-template-columns:1fr 1.08fr;gap:64px;align-items:center;width:100%}
+  .pill{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--stroke);font-family:var(--mono);font-size:12.5px;color:var(--text-2);margin-bottom:28px;backdrop-filter:blur(10px)}
+  .pill b{width:8px;height:8px;border-radius:50%;background:#3ee08f;box-shadow:0 0 12px #3ee08f;animation:blink 2s infinite}
+  @keyframes blink{50%{opacity:.35}}
+  .hero h1{font-size:clamp(46px,6.2vw,88px);font-weight:800}
+  .hero h1 .line{display:block}
+  .lead{font-size:clamp(17px,1.4vw,19px);color:var(--text-2);max-width:520px;margin:28px 0 36px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hud{display:grid;grid-template-columns:repeat(3,auto);gap:36px;margin-top:52px;padding-top:26px;border-top:1px solid var(--stroke);width:max-content;max-width:100%}
+  .hud div{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .hud strong{display:block;font-family:'Bricolage Grotesque';font-size:30px;letter-spacing:-.02em;text-transform:none;color:#fff;font-weight:700;margin-bottom:2px}
+
+  .reel-wrap{position:relative}
+  .reel-glow{position:absolute;inset:6% 4%;border-radius:40px;background:linear-gradient(120deg,rgb(var(--a1)),rgb(var(--a2)),rgb(var(--a3)));filter:blur(60px);opacity:.55;z-index:0;transition:opacity .6s}
+  .showreel{position:relative;z-index:1;border-radius:26px;overflow:hidden;aspect-ratio:16/11;background:#000;box-shadow:0 0 0 1px var(--stroke-2),0 40px 80px -30px rgba(0,0,0,.9);cursor:pointer;transform:perspective(1400px) rotateY(-6deg) rotateX(2deg);transition:transform .8s var(--ease)}
+  .showreel:hover{transform:perspective(1400px) rotateY(0) rotateX(0)}
+  .showreel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s}
+  .showreel video.on{opacity:1}
+  .showreel video.tall{object-fit:contain;background:radial-gradient(closest-side,rgba(var(--a1),.45),rgba(var(--a3),.25) 60%,#000)}
+  .showreel .bars{position:absolute;top:14px;left:14px;right:14px;display:flex;gap:6px;z-index:2}
+  .showreel .bars i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.25);overflow:hidden}
+  .showreel .bars i b{display:block;height:100%;width:0;background:#fff}
+  .showreel .tag{position:absolute;left:14px;bottom:14px;z-index:2;display:flex;gap:10px;align-items:center;padding:9px 14px;border-radius:12px;background:rgba(7,7,11,.6);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px var(--stroke);font-size:14px;font-weight:600}
+  .showreel .tag small{font-family:var(--mono);font-weight:400;color:var(--text-2);font-size:12px}
+
+  .scroll-hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:10px}
+  .scroll-hint i{width:1px;height:38px;background:linear-gradient(var(--muted),transparent);animation:drop 2s var(--ease) infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+  /* marquee */
+  .marquee{border-block:1px solid var(--stroke);padding:22px 0;overflow:hidden;white-space:nowrap;background:rgba(7,7,11,.35);backdrop-filter:blur(8px)}
+  .marquee div{display:inline-flex;animation:scroll 38s linear infinite}
+  .marquee span{font-family:'Bricolage Grotesque';font-weight:600;font-size:22px;color:var(--text-2);padding:0 26px;display:inline-flex;align-items:center;gap:52px}
+  .marquee span::after{content:"";width:7px;height:7px;border-radius:2px;background:rgb(var(--a1));transform:rotate(45deg);box-shadow:0 0 12px rgb(var(--a1))}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+
+  /* sections */
+  section{padding:130px 0;position:relative}
+  .kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:rgb(var(--a1));margin-bottom:18px;display:flex;align-items:center;gap:10px;transition:color .6s}
+  .kicker::before{content:"//";color:var(--muted)}
+  .head{display:flex;justify-content:space-between;align-items:end;gap:32px;flex-wrap:wrap;margin-bottom:60px}
+  .head h2{font-size:clamp(38px,5vw,66px);max-width:760px}
+  .head p{color:var(--text-2);max-width:380px;font-size:17px}
+
+  .glass{background:var(--glass);box-shadow:inset 0 0 0 1px var(--stroke);backdrop-filter:blur(22px) saturate(140%);-webkit-backdrop-filter:blur(22px) saturate(140%)}
+
+  /* projects */
+  .projects{display:flex;flex-direction:column;gap:32px}
+  .proj{position:relative;display:grid;grid-template-columns:1.4fr 1fr;border-radius:30px;overflow:hidden;cursor:pointer;transform-style:preserve-3d;transition:transform .5s var(--ease),box-shadow .5s;will-change:transform}
+  .proj::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.10),transparent 60%);opacity:0;transition:opacity .4s}
+  .proj:hover::after{opacity:1}
+  .proj.focus{box-shadow:inset 0 0 0 1px rgba(var(--a1),.45),0 30px 90px -40px rgba(var(--a1),.8)}
+  .proj.flip{grid-template-columns:1fr 1.4fr}
+  .proj.flip .shot{order:2}
+  .shot{position:relative;min-height:420px;overflow:hidden}
+  .frame{position:absolute;inset:22px;border-radius:18px;overflow:hidden;background:#000}
+  .frame.bare{overflow:visible;background:transparent;border-radius:0}
+  .frame > img,.frame > video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s}
+  .frame.bare > video:not([data-crop]){left:50%;width:auto;max-width:none;transform:translateX(-50%);border-radius:16px;box-shadow:0 20px 50px -18px rgba(0,0,0,.8)}
+  [data-crop]{max-width:none!important}
+  .badge{position:absolute;left:14px;top:14px;z-index:3;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:rgba(7,7,11,.62);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px var(--stroke);font-family:var(--mono);font-size:11.5px;color:#fff}
+  .badge i{width:6px;height:6px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 8px #ff4d5e}
+  .proj:not(.playing) .badge i{background:var(--muted);box-shadow:none}
+  .ptext{padding:48px 46px 42px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
+  .pnum{font-family:var(--mono);font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:10px}
+  .pnum i{font-style:normal;padding:3px 9px;border-radius:7px;box-shadow:inset 0 0 0 1px var(--stroke-2);color:var(--text-2)}
+  .ptext h3{font-size:clamp(34px,3.4vw,48px)}
+  .ptext > p{color:var(--text-2);font-size:16.5px}
+  .role{list-style:none;display:flex;flex-direction:column;gap:9px;margin:4px 0}
+  .role li{display:flex;gap:12px;font-size:15px;color:#d9d9e3}
+  .role li::before{content:"▹";flex:none;color:rgb(var(--a1));font-family:var(--mono);transition:color .6s}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;padding-top:10px}
+  .tags span{font-family:var(--mono);font-size:12px;padding:4px 10px;border-radius:7px;background:rgba(255,255,255,.05);color:var(--text-2)}
+  .code-links{display:flex;gap:8px;flex-wrap:wrap}
+  .code-links a{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:9px;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px var(--stroke-2);color:#fff;font-family:var(--mono);transition:background .2s}
+  .code-links a::before{content:"</>";color:rgb(var(--a1))}
+  .code-links a:hover{background:rgba(255,255,255,.15)}
+  .more{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;margin-top:6px}
+  .more svg{width:16px;height:16px;transition:transform .25s var(--ease)}
+  .proj:hover .more svg{transform:translateX(5px)}
+
+  .mini{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .mini .proj{display:flex;flex-direction:column}
+  .mini .shot{min-height:0;aspect-ratio:4/3.5}
+  .mini .frame{inset:16px}
+  .mini .ptext{padding:24px 26px 28px;gap:10px;flex:1}
+  .mini .ptext h3{font-size:28px}
+  .mini .ptext > p{font-size:15px}
+
+  /* strengths */
+  .strengths{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .str{padding:36px 30px;border-radius:var(--radius)}
+  .str .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .str h3{font-size:25px;margin:40px 0 12px}
+  .str p{color:var(--text-2);font-size:15.5px}
+  .str .ico{float:right;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(var(--a1),.14);color:rgb(var(--a1));transition:.6s}
+  .str .ico svg{width:22px;height:22px}
+
+  /* skills as code */
+  .skills-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;align-items:stretch}
+  .editor{border-radius:var(--radius);overflow:hidden;font-family:var(--mono);font-size:13.5px}
+  .editor pre::-webkit-scrollbar{height:0}
+  .editor-top{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--stroke)}
+  .editor-top i{width:11px;height:11px;border-radius:50%;background:#ff5f57}
+  .editor-top i:nth-child(2){background:#febc2e}.editor-top i:nth-child(3){background:#28c840}
+  .editor-top span{margin-left:10px;color:var(--muted);font-size:12.5px}
+  .editor pre{padding:22px 0;overflow-x:auto;line-height:1.75;counter-reset:ln}
+  .editor code{display:block}
+  .editor .l{display:block;padding:0 18px 0 50px;position:relative;white-space:pre}
+  .editor .l::before{counter-increment:ln;content:counter(ln);position:absolute;left:0;width:34px;text-align:right;color:#4b4b5a}
+  .k{color:#c792ea}.t{color:#82aaff}.s{color:#c3e88d}.c{color:#5f6377;font-style:italic}.f{color:#ffcb6b}.p{color:#89ddff}
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .sk{padding:24px;border-radius:20px}
+  .sk h4{font-size:17px;margin-bottom:14px}
+  .sk ul{list-style:none;display:flex;flex-wrap:wrap;gap:7px}
+  .sk li{font-size:13.5px;padding:5px 11px;border-radius:9px;background:rgba(255,255,255,.06);color:#dcdce6}
+
+  /* about */
+  .about{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center}
+  .portrait{position:relative;max-width:440px}
+  .portrait::before{content:"";position:absolute;inset:-8%;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--a1),.55),rgba(var(--a2),.25),transparent);filter:blur(30px);z-index:-1}
+  .portrait img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:30px;box-shadow:0 0 0 1px var(--stroke-2),0 40px 80px -30px rgba(0,0,0,.9)}
+  .portrait .id{position:absolute;left:18px;right:18px;bottom:18px;display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-radius:16px;font-family:var(--mono);font-size:12px;color:var(--text-2)}
+  .portrait .id b{color:#fff;font-weight:600}
+  .about h2{font-size:clamp(36px,4.2vw,56px);margin-bottom:26px}
+  .about p{color:var(--text-2);font-size:17.5px;margin-bottom:16px}
+  .about p strong{color:#fff;font-weight:600}
+
+  /* timeline */
+  .tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .tl{padding:36px;border-radius:var(--radius)}
+  .tl h3{font-size:24px;margin-bottom:28px}
+  .item{position:relative;padding:0 0 28px 28px;border-left:1px solid var(--stroke-2)}
+  .item:last-child{padding-bottom:0}
+  .item::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;background:rgb(var(--a1));box-shadow:0 0 12px rgb(var(--a1));transition:.6s}
+  .item time{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .item strong{display:block;font-size:19px;margin:4px 0 4px;font-family:'Bricolage Grotesque';font-weight:600}
+  .item p{font-size:15px;color:var(--text-2)}
+  .item p.sub{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px}
+
+  /* contact */
+  .contact{text-align:center;padding:160px 0 140px}
+  .contact h2{font-size:clamp(52px,9vw,136px);font-weight:800;letter-spacing:-.045em}
+  .contact p{color:var(--text-2);font-size:19px;max-width:540px;margin:28px auto 44px}
+  .contact .cta{justify-content:center}
+  .copy-chip{display:inline-flex;align-items:center;gap:14px;padding:8px 8px 8px 20px;border-radius:999px;font-family:var(--mono);font-size:15px}
+  .copy-chip button{font:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:999px;border:0;background:#fff;color:#0b0b10;cursor:pointer}
+  footer{border-top:1px solid var(--stroke);padding:30px 0 84px;color:var(--muted);font-size:13px;font-family:var(--mono)}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+  /* ambient HUD */
+  .amb{position:fixed;left:20px;bottom:20px;z-index:40;display:flex;align-items:center;gap:10px;padding:9px 14px 9px 10px;border-radius:999px;font-family:var(--mono);font-size:11.5px;color:var(--text-2);cursor:pointer;user-select:none;transition:opacity .4s}
+  .amb .sw{display:flex;gap:3px}
+  .amb .sw i{width:12px;height:12px;border-radius:4px;transition:background .6s}
+  .amb b{color:#fff;font-weight:500}
+  .amb .off{display:none}
+  body.no-amb .amb .on{display:none}
+  body.no-amb .amb .off{display:inline}
+
+  /* modal */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,6,.72);backdrop-filter:blur(14px)}
+  .modal.open{display:flex;animation:fade .3s}
+  @keyframes fade{from{opacity:0}}
+  .modal-box{width:min(1140px,100%);max-height:calc(100vh - 48px);overflow:auto;border-radius:28px;display:grid;grid-template-columns:1.55fr 1fr;background:rgba(14,14,20,.85);box-shadow:inset 0 0 0 1px var(--stroke-2),0 50px 100px -30px rgba(0,0,0,.9)}
+  .modal-media{display:flex;flex-direction:column;background:rgba(0,0,0,.35)}
+  #stage{position:relative;height:min(70vh,640px);overflow:hidden;cursor:pointer;margin:16px 16px 0}
+  #stage img,#stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+  #stage .paused{position:absolute;inset:0;display:grid;place-items:center;font-size:40px;color:#fff;background:rgba(0,0,0,.3);pointer-events:none;opacity:0;transition:.2s}
+  #stage.is-paused .paused{opacity:1}
+  .thumbs{display:flex;gap:8px;padding:14px 16px 16px;overflow-x:auto}
+  .thumbs button{flex:none;width:78px;height:50px;border-radius:10px;overflow:hidden;border:2px solid transparent;cursor:pointer;background:#111;padding:0;position:relative;opacity:.6;transition:.2s}
+  .thumbs button.active{border-color:rgb(var(--a1));opacity:1}
+  .thumbs img,.thumbs video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+  .thumbs .v::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;font-size:12px;color:#fff;background:rgba(0,0,0,.35)}
+  .modal-info{padding:38px 34px;display:flex;flex-direction:column;gap:16px;position:relative}
+  .modal-info h3{font-size:38px}
+  .modal-info > p{color:var(--text-2)}
+  .meta{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;font-size:14px;padding-top:18px;border-top:1px solid var(--stroke)}
+  .meta dt{color:var(--muted);font-family:var(--mono);font-size:12.5px;padding-top:2px}
+  .close{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:#fff;cursor:pointer;font-size:16px}
+  .close:hover{background:rgba(255,255,255,.16)}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);opacity:0;background:#fff;color:#0b0b10;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:600;transition:.3s var(--ease);z-index:200;pointer-events:none}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+
+  @media (max-width:1000px){
+    .hero{min-height:0;padding-top:120px}
+    .hero-grid,.about,.modal-box,.skills-grid{grid-template-columns:1fr}
+    .showreel{transform:none}
+    .proj,.proj.flip{grid-template-columns:1fr}
+    .proj.flip .shot{order:0}
+    .shot{min-height:0;aspect-ratio:16/11}
+    .mini,.strengths{grid-template-columns:1fr}
+    .mini .shot{aspect-ratio:16/12}
+    .tl-grid{grid-template-columns:1fr}
+    .nav ul{display:none}
+    .scroll-hint{display:none}
+    .portrait{max-width:420px}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 16px}
+    section{padding:90px 0}
+    .ptext{padding:28px 24px}
+    .frame{inset:14px}
+    .skills{grid-template-columns:1fr}
+    .hud{gap:22px}
+    .hud strong{font-size:24px}
+    .modal{padding:0}
+    .modal-box{max-height:100vh;height:100%;border-radius:0}
+    #stage{height:46vh}
+    .amb .lbl{display:none}
+    .editor{font-size:12.5px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="bg-fallback"></div>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo"><img src="assets/avatar.jpg" alt="" />Yaren Yılmaz</a>
+    <ul>
+      <li><a href="#work">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+    </ul>
+    <a class="btn btn-main" href="#contact">Contact me</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <div class="pill"><b></b>open_to_work = true; // Girne, Cyprus</div>
+        <h1><span class="line" data-scramble>Hi, I'm Yaren.</span><span class="line" data-scramble>I build games</span><span class="line grad" data-scramble>you can feel.</span></h1>
+        <p class="lead">Game Developer at <strong style="color:#fff;font-weight:600">PARS Game</strong> with 6+ years in <strong style="color:#fff;font-weight:600">Unity</strong> and <strong style="color:#fff;font-weight:600">Roblox Studio</strong>. I build real‑time multiplayer, core gameplay and mobile‑optimized games — from first prototype to playable build.</p>
+        <div class="cta">
+          <a class="btn btn-main" href="#work">Explore my games
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
+          <a class="btn btn-glass" href="mailto:yarenyrai@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+            Get in touch
+          </a>
+        </div>
+        <div class="hud">
+          <div><strong data-count="15" data-suffix="+">0</strong>Games built</div>
+          <div><strong data-count="6" data-suffix="+">0</strong>Years experience</div>
+          <div><strong data-count="4" data-suffix="">0</strong>Languages</div>
+        </div>
+      </div>
+
+      <div class="reel-wrap reveal">
+        <div class="reel-glow"></div>
+        <div class="showreel" id="reel" aria-label="Gameplay showreel">
+          <div class="bars"></div>
+          <video muted playsinline preload="auto" data-name="Dysphrenia" data-kind="pc · horror" data-crop=".25,.33,.664,.422" data-pal="#4a5f9e,#9fb3ea,#1a2238"><source src="assets/hq/Dysphrenia.webm" type="video/webm"><source src="assets/Dysphrenia.mp4" type="video/mp4"></video>
+          <video class="tall" muted playsinline preload="none" data-name="Catch the Cat" data-kind="mobile · puzzle" data-pal="#a44cff,#ff5fa2,#5a22c0"><source src="assets/hq/catchthecat.webm" type="video/webm"><source src="assets/catchthecat.mp4" type="video/mp4"></video>
+          <video muted playsinline preload="none" data-name="2048" data-kind="pc · puzzle" data-crop=".158,.284,.712,.716" data-pal="#2d6cdf,#7ab8ff,#ff9eb0" src="assets/2048.mp4"></video>
+          <video muted playsinline preload="none" data-name="Fluffy Run" data-kind="mobile · runner" data-pal="#ff9a6b,#7a5cc7,#2b3f7a"><source src="assets/hq/fluffyvideo.webm" type="video/webm"><source src="assets/fluffyvideo.mp4" type="video/mp4"></video>
+          <div class="tag"><span id="reelName">Dysphrenia</span><small id="reelKind">pc · horror</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">SCROLL<i></i></div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div>
+      <span>Unity</span><span>Roblox Studio</span><span>C#</span><span>Lua</span><span>C++</span><span>Gameplay Systems</span><span>Enemy AI</span><span>Multiplayer</span><span>Cinemachine</span><span>DOTween</span><span>UI / UX</span><span>Android · iOS</span><span>Git</span>
+      <span>Unity</span><span>Roblox Studio</span><span>C#</span><span>Lua</span><span>C++</span><span>Gameplay Systems</span><span>Enemy AI</span><span>Multiplayer</span><span>Cinemachine</span><span>DOTween</span><span>UI / UX</span><span>Android · iOS</span><span>Git</span>
+    </div>
+  </div>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">Selected work</div>
+          <h2>15+ games built. <span class="grad">Here are some of them.</span></h2>
+        </div>
+        <p>Scroll through — the whole page takes on the colours of the game you're looking at, sampled live from the footage.</p>
+      </div>
+
+      <div class="projects">
+        <article class="proj glass reveal" data-id="fluffy" data-pal="#ff9a6b,#7a5cc7,#2b3f7a">
+          <div class="shot">
+            <div class="badge"><i></i>GAMEPLAY</div>
+            <div class="frame">
+              <img src="assets/fluffyone.jpeg" alt="Fluffy Run title screen" loading="lazy" />
+              <video muted loop playsinline preload="none" style="opacity:0"><source src="assets/hq/fluffyvideo.webm" type="video/webm"><source src="assets/fluffyvideo.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="ptext">
+            <div class="pnum">01 <i>mobile · 2d</i></div>
+            <h3>Fluffy Run</h3>
+            <p>A cozy one‑tap endless runner starring a tiny cube, set above a painted sunset sky.</p>
+            <ul class="role">
+              <li>Dynamic level generation for endless replayability</li>
+              <li>Rewarded‑ad “second chance” monetization flow</li>
+              <li>Localized settings with music &amp; SFX controls</li>
+            </ul>
+            <div class="tags"><span>Unity</span><span>C#</span><span>Procedural</span><span>Ads</span><span>Localization</span></div>
+            <span class="more">Open case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="proj flip glass reveal" data-id="boomerang" data-pal="#3fb34f,#f2c14e,#3a7bd5">
+          <div class="shot">
+            <div class="badge"><i></i>SCREENSHOTS</div>
+            <div class="frame">
+              <img src="assets/boomerang1.png" alt="Boomerang 3D board" loading="lazy" data-crop=".1,.1,.46,.892" data-cy=".56" />
+            </div>
+          </div>
+          <div class="ptext">
+            <div class="pnum">02 <i>mobile · 3d</i></div>
+            <h3>Boomerang</h3>
+            <p>A colourful turn‑based 3D board game for up to four players, set on a low‑poly city block.</p>
+            <ul class="role">
+              <li>Turn‑based game loop with dice rolls and player order</li>
+              <li>AI opponents that make their own decisions</li>
+              <li>Cinemachine camera work and DOTween animation</li>
+            </ul>
+            <div class="tags"><span>Unity</span><span>C#</span><span>Cinemachine</span><span>DOTween</span><span>AI</span></div>
+            <div class="code-links"><a href="https://github.com/ilorenie/yaren-portfolio/blob/master/AnotherGameManager.cs" target="_blank" rel="noopener">GameManager.cs</a><a href="https://github.com/ilorenie/yaren-portfolio/blob/master/PlayerMovement.pdf" target="_blank" rel="noopener">PlayerMovement</a></div>
+            <span class="more">Open case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <article class="proj glass reveal" data-id="dysphrenia" data-pal="#4a5f9e,#9fb3ea,#1a2238">
+          <div class="shot">
+            <div class="badge"><i></i>GAMEPLAY</div>
+            <div class="frame">
+              <video muted loop playsinline preload="none" poster="assets/hq/Dysphrenia.jpg" data-crop=".25,.33,.664,.422"><source src="assets/hq/Dysphrenia.webm" type="video/webm"><source src="assets/Dysphrenia.mp4" type="video/mp4"></video>
+            </div>
+          </div>
+          <div class="ptext">
+            <div class="pnum">03 <i>pc · 3d</i></div>
+            <h3>Dysphrenia</h3>
+            <p>A first‑person psychological horror game built around atmosphere, lighting and tension.</p>
+            <ul class="role">
+              <li>First‑person controller and interaction system</li>
+              <li>Moody lighting and post‑processing for tension</li>
+              <li>Scripted events driving the narrative</li>
+            </ul>
+            <div class="tags"><span>Unity</span><span>C#</span><span>Lighting</span><span>Level Design</span></div>
+            <span class="more">Open case study <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </article>
+
+        <div class="mini">
+          <article class="proj glass reveal" data-id="tumble" data-pal="#ff9ec7,#8fd3e6,#b58cff">
+            <div class="shot">
+              <div class="badge"><i></i>UI DEMO</div>
+              <div class="frame bare">
+                <img src="assets/screenshotie.png" alt="Tumble Cube shop" loading="lazy" data-crop=".563,.13,.3,.815" data-fit="contain" />
+                <video muted loop playsinline preload="none" data-crop=".323,.137,.346,.804" data-fit="contain" data-w="1216" data-h="1080" style="opacity:0"><source src="assets/hq/TumbleCubeUI.webm" type="video/webm"><source src="assets/TumbleCubeUI.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+            <div class="ptext">
+              <div class="pnum">04 <i>mobile · multiplayer</i></div>
+              <h3>Tumble Cube</h3>
+              <p>Multiplayer puzzle game with real‑time movement, rooms and a skin &amp; accessory shop.</p>
+              <div class="tags"><span>Networking</span><span>Shop UI</span></div>
+            </div>
+          </article>
+
+          <article class="proj glass reveal" data-id="cat" data-pal="#a44cff,#ff5fa2,#5a22c0">
+            <div class="shot">
+              <div class="badge"><i></i>GAMEPLAY</div>
+              <div class="frame bare">
+                <video muted loop playsinline preload="none" poster="assets/hq/catchthecat.jpg"><source src="assets/hq/catchthecat.webm" type="video/webm"><source src="assets/catchthecat.mp4" type="video/mp4"></video>
+              </div>
+            </div>
+            <div class="ptext">
+              <div class="pnum">05 <i>mobile · 2d</i></div>
+              <h3>Catch the Cat</h3>
+              <p>Hex‑grid strategy puzzle: block tiles to trap the cat before it escapes the board.</p>
+              <div class="tags"><span>Hex Grid</span><span>Pathfinding</span></div>
+            </div>
+          </article>
+
+          <article class="proj glass reveal" data-id="g2048" data-pal="#2d6cdf,#7ab8ff,#ff9eb0">
+            <div class="shot">
+              <div class="badge"><i></i>GAMEPLAY</div>
+              <div class="frame">
+                <video muted loop playsinline preload="metadata" data-crop=".158,.284,.712,.716" src="assets/2048.mp4#t=15"></video>
+              </div>
+            </div>
+            <div class="ptext">
+              <div class="pnum">06 <i>pc · 2d</i></div>
+              <h3>2048</h3>
+              <p>The classic merge puzzle rebuilt from scratch, with a clean grid architecture.</p>
+              <div class="tags"><span>Grid Logic</span><span>C#</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">What I bring</div>
+          <h2>More than just code.</h2>
+        </div>
+      </div>
+      <div class="strengths">
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 11l7.6-4M8.2 13l7.6 4"/></svg></div>
+          <div class="n">01</div>
+          <h3>Real‑time multiplayer</h3>
+          <p>Custom room systems with matchmaking and state synchronization — built from scratch and shipped in real games.</p>
+        </div>
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+          <div class="n">02</div>
+          <h3>Mobile performance</h3>
+          <p>Games optimized to run smoothly on real phones — tight frame budgets, lean memory and fast load times.</p>
+        </div>
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          <div class="n">03</div>
+          <h3>Full‑cycle ownership</h3>
+          <p>I've taken games from GDD and prototype to finished, published builds — so I understand how every part of production connects.</p>
+        </div>
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 21V9"/></svg></div>
+          <div class="n">04</div>
+          <h3>An eye for UI &amp; feel</h3>
+          <p>I design and build my own menus, shops and HUDs in Figma and Unity, and care about how every tap and transition feels.</p>
+        </div>
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></svg></div>
+          <div class="n">05</div>
+          <h3>Clean, team‑ready code</h3>
+          <p>Readable, modular gameplay code under Git version control — easy for teammates to review, extend and maintain.</p>
+        </div>
+        <div class="str glass reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 13 9 5 9-5"/></svg></div>
+          <div class="n">06</div>
+          <h3>Multi‑engine, multi‑language</h3>
+          <p>At home in both Unity and Roblox Studio, writing C#, Lua and C++. I pick up new tools fast and adapt to whatever stack your team uses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">Skills</div>
+          <h2>My toolkit, compiled.</h2>
+        </div>
+      </div>
+      <div class="skills-grid">
+        <div class="editor glass reveal">
+          <div class="editor-top"><i></i><i></i><i></i><span>YarenYilmaz.cs</span></div>
+<pre><code><span class="l"><span class="k">public class</span> <span class="t">YarenYilmaz</span> : <span class="t">GameDeveloper</span></span><span class="l">{</span><span class="l">    <span class="k">public string</span> Role = <span class="s">"Game Developer"</span>;</span><span class="l">    <span class="k">public string</span> Studio = <span class="s">"PARS Game"</span>;</span><span class="l">    <span class="k">public int</span> YearsExp = <span class="f">6</span>; <span class="c">// since 2019</span></span><span class="l">    <span class="k">public string</span>[] Engines = { <span class="s">"Unity"</span>, <span class="s">"Roblox Studio"</span> };</span><span class="l">    <span class="k">public string</span>[] Langs = { <span class="s">"C#"</span>, <span class="s">"Lua"</span>, <span class="s">"C++"</span>, <span class="s">"HTML"</span> };</span><span class="l">    <span class="k">public string</span>[] Targets = { <span class="s">"Android"</span>, <span class="s">"iOS"</span>, <span class="s">"PC"</span>, <span class="s">"Roblox"</span> };</span><span class="l">    <span class="k">public int</span> GamesBuilt = <span class="f">15</span>; <span class="c">// and counting</span></span><span class="l"></span><span class="l">    <span class="c">// ready for the next challenge</span></span><span class="l">    <span class="k">public bool</span> <span class="f">OpenToWork</span> =&gt; <span class="k">true</span>;</span><span class="l">}</span></code></pre>
+        </div>
+        <div class="skills">
+          <div class="sk glass reveal"><h4>Engines &amp; Languages</h4><ul><li>Unity</li><li>Roblox Studio</li><li>C#</li><li>Lua</li><li>C++</li><li>HTML</li><li>Cinemachine</li><li>DOTween</li></ul></div>
+          <div class="sk glass reveal"><h4>Gameplay &amp; Multiplayer</h4><ul><li>Real‑time multiplayer</li><li>Matchmaking</li><li>State sync</li><li>2D &amp; 3D mechanics</li><li>Enemy AI</li><li>Procedural levels</li></ul></div>
+          <div class="sk glass reveal"><h4>Platforms</h4><ul><li>Android</li><li>iOS</li><li>PC</li><li>Roblox</li><li>Mobile optimization</li><li>Ad integration</li></ul></div>
+          <div class="sk glass reveal"><h4>Design &amp; Tools</h4><ul><li>Game design / GDD</li><li>UI/UX</li><li>Figma</li><li>Photoshop</li><li>Git</li><li>Visual Studio</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="portrait reveal">
+        <img src="assets/profile.jpg" alt="Yaren Yılmaz" />
+        <div class="id glass"><span><b>Yaren Yılmaz</b></span><span>Unity · C#</span></div>
+      </div>
+      <div class="reveal">
+        <div class="kicker">About me</div>
+        <h2>Developer at heart, <span class="grad">player in spirit.</span></h2>
+        <p>I'm <strong>Yaren</strong>, a game developer based in <strong>Girne, Cyprus</strong>, currently working as a <strong>Game Developer at PARS Game</strong> and studying <strong>Computer Programming at Girne American University</strong>.</p>
+        <p>Since 2019 I've built <strong>15+ games</strong> — on my own and for freelance clients — in <strong>Unity and Roblox Studio</strong>, writing C#, Lua and C++ along the way, handling the <strong>full development lifecycle</strong> — planning, prototyping, gameplay programming, UI/UX, asset integration and publishing.</p>
+        <p>I've built <strong>custom room systems with matchmaking and state synchronization</strong>, core gameplay mechanics and games optimized for mobile devices. My projects range from cozy casual and arcade games to atmospheric 3D horror — and I'm open to full‑time roles, collaborations and freelance work.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">Background</div>
+          <h2>Experience &amp; education.</h2>
+        </div>
+      </div>
+      <div class="tl-grid">
+        <div class="tl glass reveal">
+          <h3>Experience</h3>
+          <div class="item"><time>2023 — PRESENT · 3 YRS</time><strong>Game Developer · PARS Game</strong><p>Build and ship games with Unity and C#, from prototype to playable build. Work across gameplay mechanics, multiplayer systems (rooms, matchmaking, state sync) and mobile‑optimized experiences.</p><p class="sub">On‑site in Bursa, Türkiye · Jun 2023 — Apr 2025</p></div>
+          <div class="item"><time>2019 — PRESENT · 7 YRS</time><strong>Independent Game Developer · Freelance</strong><p>Designing and developing games end to end in Unity and Roblox Studio. Shipped puzzle, arcade, 3D and multiplayer projects — handling everything from core mechanics and netcode to UI/UX and optimization.</p></div>
+        </div>
+        <div class="tl glass reveal">
+          <h3>Education</h3>
+          <div class="item"><time>2024 — 2026</time><strong>Girne American University</strong><p>Computer Programming</p></div>
+          <div class="item"><time>2020 — 2024</time><strong>Zübeyde Hanım Vocational &amp; Technical Anatolian High School</strong><p>Software Development</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap reveal">
+      <div class="kicker" style="justify-content:center">Let's talk</div>
+      <h2>Let's build<br/><span class="grad">something fun.</span></h2>
+      <p>Open to full‑time roles, collaborations and freelance work. If you think I'd be a good fit for your team, I'd love to hear from you.</p>
+      <div class="cta">
+        <a class="btn btn-main" href="mailto:yarenyrai@gmail.com">Email me
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+        <span class="copy-chip glass">yarenyrai@gmail.com<button type="button" data-copy="yarenyrai@gmail.com">Copy</button></span>
+        <a class="btn btn-glass" href="https://www.linkedin.com/in/yaren-y%C4%B1lmaz-706558368/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-glass" href="https://www.upwork.com/freelancers/~0150732f35efcf262f" target="_blank" rel="noopener">Upwork ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Yaren Yılmaz</span>
+    <span>Hand‑coded · WebGL ambient shader · no frameworks</span>
+  </div>
+</footer>
+
+<div class="amb glass" id="amb" title="Toggle ambient mode">
+  <span class="sw"><i></i><i></i><i></i></span>
+  <span class="lbl"><span class="on">AMBIENT · <b id="ambSrc">—</b></span><span class="off">AMBIENT · OFF</span></span>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-media"><div id="stage"></div><div class="thumbs" id="thumbs"></div></div>
+    <div class="modal-info">
+      <button class="close" id="close" aria-label="Close">✕</button>
+      <div class="pnum"><i id="mKind"></i></div>
+      <h3 id="mTitle"></h3>
+      <p id="mDesc"></p>
+      <ul class="role" id="mList"></ul>
+      <dl class="meta" id="mMeta"></dl>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">Email copied</div>
+
+<script>
+const P = {
+  fluffy:{title:"Fluffy Run",kind:"mobile · 2d endless runner",
+    desc:"A cozy one‑tap endless runner starring a tiny cube with a big heart, set above a painted sky.",
+    list:["Dynamic level generation for endless replayability","Rewarded‑ad “save me” flow on game over","Settings menu with language selection, music & SFX toggles","Best‑score tracking and polished title / pause screens"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"Android / iOS",Role:"Solo developer"},
+    media:[["v","assets/fluffyvideo.mp4"],["i","assets/fluffyone.jpeg"],["i","assets/fluffytwo.jpeg"]]},
+  boomerang:{title:"Boomerang",kind:"mobile · 3d board game",
+    desc:"A colourful 3D board game for up to four players, set in a low‑poly city block.",
+    list:["Turn‑based game loop with dice rolls and player order","AI opponent decision logic","Cinemachine cameras and DOTween‑driven movement","Special tiles and challenge‑card system"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"Mobile (portrait)",Players:"1–4"},
+    media:[["i","assets/boomerang0.png",".531,.078,.421,.904"],["i","assets/boomerang1.png",".1,.1,.46,.892"],["i","assets/boomerang1.png",".573,.112,.395,.862"]]},
+  dysphrenia:{title:"Dysphrenia",kind:"pc · 3d psychological horror",
+    desc:"An atmospheric first‑person horror game where lighting, sound and pacing do the heavy lifting.",
+    list:["First‑person controller and interaction system (doors, objects, triggers)","Moody lighting and post‑processing to build tension","Scripted events and scene flow driving the narrative","Level layout designed around exploration and dread"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"PC",Role:"Solo developer"},
+    media:[["v","assets/Dysphrenia.mp4",".25,.33,.664,.422"]]},
+  tumble:{title:"Tumble Cube",kind:"mobile · 2d multiplayer puzzle",
+    desc:"A cute multiplayer puzzle game with real‑time movement and a character customization shop.",
+    list:["Real‑time movement and multiplayer logic built from scratch","Create / join / random room flow","Skin & accessory shop with in‑game currency","Soft pastel UI designed and implemented in Unity UI"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"Mobile",Mode:"Multiplayer"},
+    media:[["v","assets/TumbleCubeUI.mp4",".323,.137,.346,.804"],["i","assets/screenshotie.png",".563,.13,.3,.815"]]},
+  cat:{title:"Catch the Cat",kind:"mobile · hex puzzle",
+    desc:"Block tiles on a hex grid to trap the cat before it reaches the edge — simple rules, surprisingly tricky.",
+    list:["Hex‑grid board generation and neighbour logic","Cat AI that searches for the shortest escape path","Win / fail states with playful UI feedback","Quick restart and settings flow"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"Mobile (portrait)",Genre:"Strategy puzzle"},
+    media:[["v","assets/catchthecat.mp4"]]},
+  g2048:{title:"2048",kind:"pc · 2d puzzle",
+    desc:"A from‑scratch rebuild of the classic merge puzzle, focused on clean grid architecture.",
+    list:["Tile movement and merge rules implemented from scratch","Grid data model decoupled from visuals","Score tracking and game‑over detection","Multiple boards running side by side"],
+    meta:{Engine:"Unity",Language:"C#",Platform:"PC",Focus:"Grid programming"},
+    media:[["v","assets/2048.mp4",".158,.284,.712,.716"]]}
+};
+const HQ={'assets/Dysphrenia.mp4':'assets/hq/Dysphrenia.webm','assets/fluffyvideo.mp4':'assets/hq/fluffyvideo.webm','assets/catchthecat.mp4':'assets/hq/catchthecat.webm','assets/TumbleCubeUI.mp4':'assets/hq/TumbleCubeUI.webm'};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let hovered=null,focused=null;
+
+/* ---------- crop: show only the game view of editor captures ---------- */
+function fit(el,mode){
+  const c=el.dataset.crop;if(!c)return;
+  if(el.tagName==='VIDEO'&&/\.webm/.test(el.currentSrc)){ // HQ files are already cropped
+    el.removeAttribute('data-crop');['width','height','left','top','right','bottom','objectFit','clipPath'].forEach(k=>el.style[k]='');return;}
+  const [x,y,w,h]=c.split(',').map(Number);
+  const box=el.parentElement;if(!box)return;
+  const W=box.clientWidth,H=box.clientHeight;
+  const vw=el.videoWidth||el.naturalWidth||+el.dataset.w,vh=el.videoHeight||el.naturalHeight||+el.dataset.h;
+  if(!vw||!vh||!W||!H)return;
+  const cw=w*vw,ch=h*vh,s=(mode||el.dataset.fit)==='contain'?Math.min(W/cw,H/ch):Math.max(W/cw,H/ch);
+  const cy=el.dataset.cy?+el.dataset.cy:y+h/2;
+  Object.assign(el.style,{width:vw*s+'px',height:vh*s+'px',left:W/2-(x+w/2)*vw*s+'px',top:H/2-cy*vh*s+'px',right:'auto',bottom:'auto',objectFit:'fill',
+    clipPath:`inset(${y*100}% ${(1-x-w)*100}% ${(1-y-h)*100}% ${x*100}% round 14px)`});
+}
+function fitAll(){document.querySelectorAll('[data-crop]').forEach(el=>fit(el))}
+document.querySelectorAll('[data-crop]').forEach(el=>{
+  el.addEventListener(el.tagName==='VIDEO'?'loadedmetadata':'load',()=>fit(el));
+  if(el.complete||el.readyState>0)fit(el);
+});
+addEventListener('resize',fitAll);addEventListener('load',fitAll);
+
+/* ---------- ambient colour engine ---------- */
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const parsePal=s=>s.split(',').map(hex);
+const DEFAULT_PAL=parsePal('#5b6cff,#b04cff,#1c2a6b');
+let target=DEFAULT_PAL.map(c=>c.slice()), cur=DEFAULT_PAL.map(c=>c.slice());
+let ambientOn=true, ambSource=null, ambName='—';
+const sw=[...document.querySelectorAll('.amb .sw i')];
+
+// sample a playing video / image into 3 vivid colours; returns null if the source can't be read
+const sc=document.createElement('canvas');sc.width=32;sc.height=18;
+const sx=sc.getContext('2d',{willReadFrequently:true});
+function sampleColours(el){
+  try{
+    const vw=el.videoWidth||el.naturalWidth,vh=el.videoHeight||el.naturalHeight;
+    if(!vw)return null;
+    const c=el.dataset.crop?el.dataset.crop.split(',').map(Number):[0,0,1,1];
+    sx.drawImage(el,c[0]*vw,c[1]*vh,c[2]*vw,c[3]*vh,0,0,32,18);
+    const d=sx.getImageData(0,0,32,18).data,px=[];
+    for(let i=0;i<d.length;i+=4){
+      const r=d[i]/255,g=d[i+1]/255,b=d[i+2]/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),s=mx?(mx-mn)/mx:0;
+      let hh=0;if(mx!==mn){hh=mx===r?(g-b)/(mx-mn)%6:mx===g?(b-r)/(mx-mn)+2:(r-g)/(mx-mn)+4;hh=(hh*60+360)%360}
+      if(mx>.16)px.push({r,g,b,h:hh,s,score:s*mx*.8+mx*.4});
+    }
+    if(px.length<18*32*.06)return null; // too dark to read: keep the game's preset palette
+    px.sort((a,b)=>b.score-a.score);
+    const top=px.slice(0,Math.floor(px.length*.35)).sort((a,b)=>a.h-b.h),n=Math.floor(top.length/3);
+    const groups=[top.slice(0,n),top.slice(n,2*n),top.slice(2*n)];
+    const cols=groups.map((g,i)=>{let r=0,gg=0,b=0,ss=0;g.forEach(p=>{r+=p.r;gg+=p.g;b+=p.b;ss+=p.s});const k=g.length||1;let c=[r/k,gg/k,b/k];
+      const m=Math.max(0,Math.min(1,(.3-ss/k)/.3)); // greyish footage leans on the preset palette
+      return c.map((x,j)=>x*(1-m)+presetPal[i][j]*m)});
+    // lift: keep hue, guarantee some brightness & saturation so it glows on black
+    return cols.map(c=>{const mx=Math.max(...c)||1,f=Math.max(1,.62/mx);let v=c.map(x=>Math.min(1,x*f));const avg=(v[0]+v[1]+v[2])/3;return v.map(x=>Math.min(1,Math.max(0,avg+(x-avg)*1.35)))});
+  }catch(e){return null}
+}
+let presetPal=DEFAULT_PAL;
+function setSource(el,pal,name){if(el===ambSource&&!pal)return;ambSource=el;if(pal&&pal!==ambPalStr){ambPalStr=pal;presetPal=parsePal(pal);target=presetPal.map(c=>c.slice())}ambName=name||'—';}
+let ambPalStr='';
+let sampleT=0;
+function ambientTick(now){
+  if(ambSource&&now-sampleT>220){
+    sampleT=now;
+    const ok=(ambSource.tagName==='VIDEO'?ambSource.readyState>=2:ambSource.complete)&&sampleColours(ambSource);
+    if(ok)target=ok;
+  }
+  const k=reduced?1:.045;
+  for(let i=0;i<3;i++)for(let j=0;j<3;j++)cur[i][j]+=(target[i][j]-cur[i][j])*k;
+}
+let cssT=0;
+function pushCSS(now){
+  if(now-cssT<120)return;cssT=now;
+  const root=document.documentElement.style;
+  cur.forEach((c,i)=>{
+    const lift=i<2?.28:0; // accents used for text get lifted towards white
+    const v=c.map(x=>Math.round((x+(1-x)*lift)*255));
+    root.setProperty('--a'+(i+1),v.join(','));
+    sw[i].style.background=`rgb(${v})`;
+  });
+  document.getElementById('ambSrc').textContent=ambName;
+}
+
+/* ---------- WebGL shader background ---------- */
+const cv=document.getElementById('bg');
+const gl=cv.getContext('webgl',{antialias:false,premultipliedAlpha:false});
+let mouse=[.5,.6],mouseT=[.5,.6];
+addEventListener('pointermove',e=>{mouseT=[e.clientX/innerWidth,1-e.clientY/innerHeight]},{passive:true});
+let draw=()=>{};
+if(gl){
+  const vs=`attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
+  const fs=`precision highp float;
+  uniform vec2 r;uniform float t;uniform vec3 c1,c2,c3;uniform vec2 m;uniform float amt;
+  float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+  float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+    return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+  float fbm(vec2 p){float v=0.,a=.5;mat2 R=mat2(.8,.6,-.6,.8);for(int i=0;i<5;i++){v+=a*n(p);p=R*p*2.02;a*=.5;}return v;}
+  void main(){
+    vec2 uv=gl_FragCoord.xy/r;float asp=r.x/r.y;vec2 p=vec2(uv.x*asp,uv.y)*1.5;
+    float T=t*.045;
+    vec2 q=vec2(fbm(p+vec2(0.,T)),fbm(p+vec2(5.2,1.3)-T));
+    vec2 w=vec2(fbm(p+2.4*q+vec2(1.7,9.2)+T*1.3),fbm(p+2.4*q+vec2(8.3,2.8)-T));
+    float f=fbm(p+2.8*w);
+    vec3 col=mix(c3*.55,c1,smoothstep(.2,.85,f));
+    col=mix(col,c2,smoothstep(.35,1.,length(w)*.9)*.85);
+    col*=.18+.9*f*f;
+    vec2 mm=vec2(m.x*asp,m.y);float d=distance(vec2(uv.x*asp,uv.y),mm);
+    col+=mix(c1,c2,.5)*.22*exp(-d*d*5.);
+    float vig=smoothstep(1.35,.2,length((uv-.5)*vec2(asp*.8,1.)));
+    col*=vig*amt;
+    col=col/(1.+col*.6);
+    gl_FragColor=vec4(col+vec3(.012,.012,.02),1.);
+  }`;
+  const sh=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s};
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,vs));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(pr);
+  if(gl.getProgramParameter(pr,gl.LINK_STATUS)){
+    gl.useProgram(pr);
+    const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    const U=k=>gl.getUniformLocation(pr,k);const ur=U('r'),ut=U('t'),u1=U('c1'),u2=U('c2'),u3=U('c3'),um=U('m'),ua=U('amt');
+    const SCALE=.5;let amt=1,amtT=1;
+    function resize(){cv.width=Math.max(1,innerWidth*SCALE|0);cv.height=Math.max(1,innerHeight*SCALE|0);gl.viewport(0,0,cv.width,cv.height)}
+    resize();addEventListener('resize',resize);
+    document.querySelector('.bg-fallback').style.display='none';
+    draw=(now)=>{
+      amtT=ambientOn?1:.25;amt+=(amtT-amt)*.06;
+      mouse[0]+=(mouseT[0]-mouse[0])*.05;mouse[1]+=(mouseT[1]-mouse[1])*.05;
+      gl.uniform2f(ur,cv.width,cv.height);gl.uniform1f(ut,reduced?20:now/1000);
+      gl.uniform3fv(u1,cur[0]);gl.uniform3fv(u2,cur[1]);gl.uniform3fv(u3,cur[2]);
+      gl.uniform2f(um,mouse[0],mouse[1]);gl.uniform1f(ua,amt);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+    };
+  }
+}
+function loop(now){ambientTick(now);pushCSS(now);draw(now);requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+
+document.getElementById('amb').addEventListener('click',()=>{ambientOn=!ambientOn;document.body.classList.toggle('no-amb',!ambientOn)});
+
+/* ---------- nav, reveal, counters, scramble ---------- */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true});
+document.getElementById('yr').textContent=new Date().getFullYear();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const to=+el.dataset.count,from=+(el.dataset.from||0),t0=performance.now()+500,D=1400;
+  (function step(now){const p=Math.min(1,Math.max(0,(now-t0)/D)),e=1-Math.pow(1-p,4);el.textContent=Math.round(from+(to-from)*e)+(p>=1?(el.dataset.suffix||''):'');if(p<1)requestAnimationFrame(step)})(t0);
+});
+
+const GLYPHS='!<>-_\\/[]{}—=+*^?#01';
+document.querySelectorAll('[data-scramble]').forEach((el,li)=>{
+  if(reduced)return;
+  const txt=el.textContent;let frame=0;const start=li*8;
+  const q=[...txt].map((ch,i)=>({ch,end:start+10+i*1.6+Math.random()*10}));
+  (function tick(){
+    let out='',done=true;
+    for(const c of q){
+      if(frame>=c.end||c.ch===' ')out+=c.ch;
+      else{done=false;out+=frame<start?' ':GLYPHS[Math.random()*GLYPHS.length|0]}
+    }
+    el.textContent=out;frame++;
+    if(!done)requestAnimationFrame(tick);
+  })();
+});
+
+/* ---------- showreel ---------- */
+const reelVids=[...document.querySelectorAll('#reel video')];let reelIdx=0;
+(()=>{
+  const reel=document.getElementById('reel'),bars=reel.querySelector('.bars');
+  const nm=document.getElementById('reelName'),kd=document.getElementById('reelKind');
+  reelVids.forEach(()=>bars.insertAdjacentHTML('beforeend','<i><b></b></i>'));
+  const fills=[...bars.querySelectorAll('b')];let t0=0;const DUR=5500;
+  function show(n){
+    reelVids.forEach((v,k)=>{if(k!==n){v.classList.remove('on');v.pause()}});
+    fills.forEach((f,k)=>f.style.width=k<n?'100%':'0');
+    const v=reelVids[n];v.preload='auto';v.currentTime=0;v.classList.add('on');v.play().catch(()=>{});
+    nm.textContent=v.dataset.name;kd.textContent=v.dataset.kind;
+    if(reelVids[n+1])reelVids[n+1].preload='auto';
+    t0=performance.now();reelIdx=n;pickSource();
+  }
+  function tick(now){const p=Math.min(1,(now-t0)/DUR);fills[reelIdx].style.width=p*100+'%';if(p>=1)show((reelIdx+1)%reelVids.length);requestAnimationFrame(tick)}
+  show(0);requestAnimationFrame(tick);
+  reel.addEventListener('click',()=>show((reelIdx+1)%reelVids.length));
+})();
+
+/* ---------- project cards: focus-to-play, tilt, glare ---------- */
+const cards=[...document.querySelectorAll('.proj')];
+const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+function cardMedia(c){return c.querySelector('.frame video')||c.querySelector('.frame img')}
+function playCard(c,on){
+  const v=c.querySelector('.frame video');if(!v)return;
+  const img=c.querySelector('.frame img');
+  if(on){v.play().then(()=>{v.style.opacity=1;if(img)img.style.opacity=0;c.classList.add('playing')}).catch(()=>{})}
+  else{v.pause();c.classList.remove('playing');if(img){v.style.opacity=0;img.style.opacity=1}}
+}
+function pickSource(){
+  const active=hovered||focused;
+  if(active){setSource(cardMedia(active),active.dataset.pal,P[active.dataset.id].title);return}
+  const hero=document.querySelector('.hero').getBoundingClientRect();
+  if(hero.bottom>innerHeight*.35){const v=reelVids[reelIdx];setSource(v,v.dataset.pal,v.dataset.name)}
+}
+function updateFocus(){
+  const cy=innerHeight/2,cx=innerWidth/2;let best=null,bd=1e9;
+  for(const c of cards){const r=c.getBoundingClientRect();if(r.top>cy||r.bottom<cy)continue;const d=Math.abs((r.left+r.right)/2-cx);if(d<bd){bd=d;best=c}}
+  if(best!==focused){
+    if(focused&&focused!==hovered){focused.classList.remove('focus');playCard(focused,false)}
+    focused=best;
+    if(focused){focused.classList.add('focus');playCard(focused,true)}
+  }
+  pickSource();
+}
+let fq=0;addEventListener('scroll',()=>{if(!fq)fq=requestAnimationFrame(()=>{fq=0;updateFocus()})},{passive:true});
+addEventListener('resize',updateFocus);updateFocus();
+
+cards.forEach(c=>{
+  const big=!c.closest('.mini'),max=big?3:6;
+  c.addEventListener('mouseenter',()=>{if(!fine)return;hovered=c;playCard(c,true);pickSource()});
+  c.addEventListener('mouseleave',()=>{
+    c.style.transform='';
+    if(hovered===c)hovered=null;
+    if(c!==focused)playCard(c,false);
+    pickSource();
+  });
+  c.addEventListener('mousemove',e=>{
+    if(!fine||reduced)return;
+    const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--gx',x*100+'%');c.style.setProperty('--gy',y*100+'%');
+    c.style.transform=`perspective(1600px) rotateX(${(.5-y)*max}deg) rotateY(${(x-.5)*max}deg) translateY(-4px)`;
+  });
+  c.addEventListener('click',e=>{if(!e.target.closest('a'))openP(c)});
+});
+
+/* ---------- modal ---------- */
+const modal=document.getElementById('modal'),stage=document.getElementById('stage'),thumbs=document.getElementById('thumbs');
+function setStage(m){
+  const crop=m[2]?` data-crop="${m[2]}" data-fit="contain"`:'';
+  const hq=HQ[m[1]];
+  stage.classList.remove('is-paused');
+  stage.innerHTML=m[0]==='v'
+    ?`<video${crop} autoplay muted playsinline loop>${hq?`<source src="${hq}" type="video/webm">`:''}<source src="${m[1]}" type="video/mp4"></video><div class="paused">❚❚</div>`
+    :`<img src="${m[1]}"${crop} alt="">`;
+  const el=stage.firstElementChild;
+  el.addEventListener(m[0]==='v'?'loadedmetadata':'load',()=>fit(el));
+  requestAnimationFrame(()=>fit(el));
+  modalSrc=el;setSource(el,null,ambName);
+}
+let modalSrc=null;
+stage.addEventListener('click',()=>{const v=stage.querySelector('video');if(!v)return;v.paused?v.play():v.pause();stage.classList.toggle('is-paused',v.paused)});
+function openP(card){
+  const p=P[card.dataset.id];
+  document.getElementById('mTitle').textContent=p.title;
+  document.getElementById('mKind').textContent=p.kind;
+  document.getElementById('mDesc').textContent=p.desc;
+  document.getElementById('mList').innerHTML=p.list.map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('mMeta').innerHTML=Object.entries(p.meta).map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+  thumbs.style.display=p.media.length>1?'flex':'none';
+  thumbs.innerHTML=p.media.map((m,k)=>`<button class="${k?'':'active'} ${m[0]==='v'?'v':''}" data-k="${k}">${m[0]==='v'?`<video src="${m[1]}#t=1" muted preload="metadata"></video>`:`<img src="${m[1]}" alt="">`}</button>`).join('');
+  thumbs.querySelectorAll('button').forEach(b=>b.onclick=()=>{thumbs.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));setStage(p.media[b.dataset.k])});
+  modal.classList.add('open');document.body.style.overflow='hidden';
+  cards.forEach(c=>playCard(c,false));
+  setStage(p.media[0]);
+}
+function closeM(){
+  modal.classList.remove('open');stage.innerHTML='';document.body.style.overflow='';modalSrc=null;
+  cards.forEach(c=>c.classList.remove('focus'));focused=null;updateFocus();
+}
+document.getElementById('close').onclick=closeM;
+modal.addEventListener('click',e=>{if(e.target===modal)closeM()});
+addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+
+/* ---------- copy email ---------- */
+document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',e=>{
+  e.preventDefault();e.stopPropagation();
+  navigator.clipboard?.writeText(b.dataset.copy).catch(()=>{});
+  const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1600);
+}));
+</script>
+</body>
+</html>
