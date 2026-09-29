@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI[] characterNameTexts;
     public TextMeshPro[] characterNameTextsTwo;
 
-    public int twoTourCount = 2;
+    public int skipTwoTurnsCount = 2;
 
     public GameObject greenCard;
     public GameObject blueCard;
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     public GameObject dice;
     public GameObject button;
 
-    public Button zarButton;
+    public Button diceButton;
 
     public AudioSource panelSound;
     public AudioSource buttonSound;
@@ -126,12 +126,12 @@ public class GameManager : MonoBehaviour
 
     public void OffButton()
     {
-        zarButton.interactable = false;
+        diceButton.interactable = false;
     }
 
     public void EnableButton()
     {
-        zarButton.interactable = true;
+        diceButton.interactable = true;
     }
 
     private void Update()
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
         buttonSound.Play();
     }
 
-    public void Cagir()
+    public void Call()
     {
 
     }
@@ -167,83 +167,83 @@ public class GameManager : MonoBehaviour
         }
         cameras[cameraIndex].Priority = 1;
 
-        zarButton.interactable = true;
+        diceButton.interactable = true;
     }
 
 
     public void StartNextTurn()
     {
-        players[currentPlayer].gameObject.GetComponent<PlayersAniim>().StopAnim();
+        players[currentPlayer].gameObject.GetComponent<PlayerAnimator>().StopAnim();
 
         dice.SetActive(false);
         buttonText.SetActive(true);
 
-    yeniden:
+    retry:
         currentPlayer = (currentPlayer + 1) % players.Count;
         SetCameraTarget(currentPlayer);
         PlayersAnim();
-        if (players[currentPlayer].tourWait == true)
+        if (players[currentPlayer].skipTurn == true)
         {
-            players[currentPlayer].tourWait = false;
-            goto yeniden;
+            players[currentPlayer].skipTurn = false;
+            goto retry;
         }
 
-        if (players[currentPlayer].twoTourWait == true && twoTourCount == 0)
+        if (players[currentPlayer].skipTwoTurns == true && skipTwoTurnsCount == 0)
         {
-            players[currentPlayer].twoTourWait = false;
+            players[currentPlayer].skipTwoTurns = false;
         }
 
-        else if (players[currentPlayer].twoTourWait == true && twoTourCount != 0)
+        else if (players[currentPlayer].skipTwoTurns == true && skipTwoTurnsCount != 0)
         {
-            twoTourCount--;
-            goto yeniden;
+            skipTwoTurnsCount--;
+            goto retry;
         }
 
         PlayersAnim();
         NickOnOff.Instance.currentPl();
-        //if (players[0].tourWait == true)
+        //if (players[0].skipTurn == true)
         //{
         //    p1redcard.SetActive(true);
         //}
 
-        //else if (players[0].tourWait == false)
+        //else if (players[0].skipTurn == false)
         //{
         //    p1redcard.SetActive(false);
         //}
 
-        //if (players[1].tourWait == true)
+        //if (players[1].skipTurn == true)
         //{
         //    p2redcard.SetActive(true);
         //}
 
-        //else if (players[1].tourWait == false)
+        //else if (players[1].skipTurn == false)
         //{
         //    p2redcard.SetActive(false);
         //}
 
-        //if (players[2].tourWait == true)
+        //if (players[2].skipTurn == true)
         //{
         //    p3redcard.SetActive(true);
         //}
 
-        //else if (players[2].tourWait == false)
+        //else if (players[2].skipTurn == false)
         //{
         //    p3redcard.SetActive(false);
         //}
 
-        //if (players[3].tourWait == true)
+        //if (players[3].skipTurn == true)
         //{
         //    p4redcard.SetActive(true);
         //}
 
-        //else if (players[3].tourWait == false)
+        //else if (players[3].skipTurn == false)
         //{
         //    p4redcard.SetActive(false);
         //}
 
-        if (players[currentPlayer].isSuspen == true)
+        if (players[currentPlayer].isSuspended == true)
         {
-            players[currentPlayer].isSuspen = false;
+            players[currentPlayer].isSuspended = false;
             CardEvent.instance.BackComeGreenCard();
 
         }
@@ -262,24 +262,24 @@ public class GameManager : MonoBehaviour
 
     public void PlayersAnim()
     {
-        players[currentPlayer].gameObject.GetComponent<PlayersAniim>().StartAnim();
+        players[currentPlayer].gameObject.GetComponent<PlayerAnimator>().StartAnim();
 
     }
 
     public void TwoPlayersAnim()
     {
-        players[Way.instance.twoPlayerOne].gameObject.GetComponent<PlayersAniim>().StartAnim();
+        players[Way.instance.twoPlayerOne].gameObject.GetComponent<PlayerAnimator>().StartAnim();
     }
 
     public void TwoPlayersAnimSecond()
     {
-        players[Way.instance.twoPlayerOne].gameObject.GetComponent<PlayersAniim>().StopAnim();
-        players[Way.instance.twoPlayerTwo].gameObject.GetComponent<PlayersAniim>().StartAnim();
+        players[Way.instance.twoPlayerOne].gameObject.GetComponent<PlayerAnimator>().StopAnim();
+        players[Way.instance.twoPlayerTwo].gameObject.GetComponent<PlayerAnimator>().StartAnim();
     }
 
     public void TwoPlayersAnimSecondStop()
     {
-        players[Way.instance.twoPlayerTwo].gameObject.GetComponent<PlayersAniim>().StopAnim();
+        players[Way.instance.twoPlayerTwo].gameObject.GetComponent<PlayerAnimator>().StopAnim();
     }
 
     public void SetDiceSide(int side)
@@ -361,7 +361,7 @@ public class GameManager : MonoBehaviour
 
     public void IfTwoPlayer()
     {
-        players[currentPlayer].GetComponent<PlayersAniim>().StopAnim();
+        players[currentPlayer].GetComponent<PlayerAnimator>().StopAnim();
     }
 
     public void TurtlePanel()
@@ -459,7 +459,7 @@ public class GameManager : MonoBehaviour
         isTwoPlayerPanel.SetActive(true);
 
 
-        isTwoPlayerPanel.GetComponent<Animator>().Play("panelaniim");
+        isTwoPlayerPanel.GetComponent<Animator>().Play("panelAnimator");
 
     }
 
@@ -475,20 +475,20 @@ public class GameManager : MonoBehaviour
             twoPlayers.Add(players[i]);
         }
 
-        if (twoPlayers[0].isSheildForFight == true)
+        if (twoPlayers[0].hasShieldForFight == true)
         {
-            CardEvent.instance.ComeBackCardGreen(twoPlayers[0].sheildForFightCard);
+            CardEvent.instance.ComeBackCardGreen(twoPlayers[0].shieldForFightCard);
         }
 
-        else if (twoPlayers[1].isSheildForFight == true)
+        else if (twoPlayers[1].hasShieldForFight == true)
         {
-            CardEvent.instance.ComeBackCardGreen(twoPlayers[1].sheildForFightCard);
+            CardEvent.instance.ComeBackCardGreen(twoPlayers[1].shieldForFightCard);
         }
 
         else
         {
 
-            //NickOnOff.Instance.currentPlMeydanOkuma(twoPlayers[0].playerIndex);
+            //NickOnOff.Instance.currentPlayerChallenge(twoPlayers[0].playerIndex);
             //SetCameraTarget(twoPlayers[0].playerIndex);
             //SelectedPlayerChange(twoPlayers[0].playerIndex);
         }
@@ -521,7 +521,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void CancelSiyrilmaci()
+    public void CancelEscapeCard()
     {
         panelSound.Play();
         isTwoPlayerPanel.SetActive(true);
@@ -554,14 +554,14 @@ public class GameManager : MonoBehaviour
         }
         LeanTween.scale(players[playerIndex].gameObject, Vector3.one * 0.633135736f, 0.5f).setLoopPingPong();
     }
-    public bool isMeydanOkuma = false;
+    public bool isChallenge = false;
     //public void TwoPlayerSelect(List<PlayerMovement> selectedPlayers)
     //{
     //    if (selectedPlayers.Count == 2)
     //    {
     //        twoPlayerPanel.SetActive(false);
-    //        isMeydanOkuma = true;
-    //        NickOnOff.Instance.currentPlMeydanOkuma(selectedPlayers[0].playerIndex);
+    //        isChallenge = true;
+    //        NickOnOff.Instance.currentPlayerChallenge(selectedPlayers[0].playerIndex);
     //        SetCameraTarget(selectedPlayers[0].playerIndex);
     //        SelectedPlayerChange(selectedPlayers[0].playerIndex);
 
@@ -622,9 +622,9 @@ public class GameManager : MonoBehaviour
 
     public void SameBlockDiceValue(int diceValue)
     {
-        Debug.Log("Zar atýldý:  " + diceValue);
-        meydanOkumaDiceValues.Add(diceValue);
-       // NickOnOff.Instance.currentPlMeydanOkuma(twoPlayers[1].playerIndex);
+        Debug.Log("Dice rolled: " + diceValue);
+        challengeDiceValues.Add(diceValue);
+       // NickOnOff.Instance.currentPlayerChallenge(twoPlayers[1].playerIndex);
         //SetCameraTarget(twoPlayers[1].playerIndex);
         SelectedPlayerChange(twoPlayers[1].playerIndex);
 
@@ -633,46 +633,46 @@ public class GameManager : MonoBehaviour
 
             if (twoPlayers[0].playerIndex == 0)
             {
-                diceValueText.text = meydanOkumaDiceValues[0].ToString();
+                diceValueText.text = challengeDiceValues[0].ToString();
             }
 
-            else if (twoPlayers[1].playerIndex == 0 && meydanOkumaDiceValues.Count >= 2)
+            else if (twoPlayers[1].playerIndex == 0 && challengeDiceValues.Count >= 2)
             {
-                diceValueText.text = meydanOkumaDiceValues[1].ToString();
+                diceValueText.text = challengeDiceValues[1].ToString();
             }
 
             if (twoPlayers[0].playerIndex == 1)
             {
-                diceValueTextTwo.text = meydanOkumaDiceValues[0].ToString();
+                diceValueTextTwo.text = challengeDiceValues[0].ToString();
             }
 
-            else if (twoPlayers[1].playerIndex == 1 && meydanOkumaDiceValues.Count >= 2)
+            else if (twoPlayers[1].playerIndex == 1 && challengeDiceValues.Count >= 2)
             {
-                diceValueTextTwo.text = meydanOkumaDiceValues[1].ToString();
+                diceValueTextTwo.text = challengeDiceValues[1].ToString();
             }
 
             if (twoPlayers[0].playerIndex == 2)
             {
-                diceValueTextThree.text = meydanOkumaDiceValues[0].ToString();
+                diceValueTextThree.text = challengeDiceValues[0].ToString();
             }
 
-            else if (twoPlayers[1].playerIndex == 2 && meydanOkumaDiceValues.Count >= 2)
+            else if (twoPlayers[1].playerIndex == 2 && challengeDiceValues.Count >= 2)
             {
-                diceValueTextThree.text = meydanOkumaDiceValues[1].ToString();
+                diceValueTextThree.text = challengeDiceValues[1].ToString();
             }
 
             if (twoPlayers[0].playerIndex == 3)
             {
-                diceValueTextFour.text = meydanOkumaDiceValues[0].ToString();
+                diceValueTextFour.text = challengeDiceValues[0].ToString();
             }
 
-            else if (twoPlayers[1].playerIndex == 3 && meydanOkumaDiceValues.Count >= 2)
+            else if (twoPlayers[1].playerIndex == 3 && challengeDiceValues.Count >= 2)
             {
-                diceValueTextFour.text = meydanOkumaDiceValues[1].ToString();
+                diceValueTextFour.text = challengeDiceValues[1].ToString();
             }
         }
 
-        if (meydanOkumaDiceValues.Count >= 2)
+        if (challengeDiceValues.Count >= 2)
         {
 
 
@@ -680,28 +680,28 @@ public class GameManager : MonoBehaviour
             {
                 twoPlayers[i].isTwoPlayer = false;
             }
-            if (meydanOkumaDiceValues[0] == meydanOkumaDiceValues[1])
+            if (challengeDiceValues[0] == challengeDiceValues[1])
             {
-                meydanOkumaDiceValues.RemoveAt(1);
+                challengeDiceValues.RemoveAt(1);
                 StartCoroutine(Diced.Instance.RollDiceforTwoPlayer());
             }
             else
             {
-                if (meydanOkumaDiceValues[0] > meydanOkumaDiceValues[1])
+                if (challengeDiceValues[0] > challengeDiceValues[1])
                 {
                     twoPlayers[1].GoToHospital();
                     twoPlayers.Remove(twoPlayers[1]);
                     twoPlayers.Remove(twoPlayers[0]);
                 }
-                else if (meydanOkumaDiceValues[0] < meydanOkumaDiceValues[1])
+                else if (challengeDiceValues[0] < challengeDiceValues[1])
                 {
                     twoPlayers[0].GoToHospital();
                     twoPlayers.Remove(twoPlayers[0]);
                     twoPlayers.Remove(twoPlayers[1]);
                 }
 
-                meydanOkumaDiceValues.Clear();
-                // isMeydanOkuma = false;
+                challengeDiceValues.Clear();
+                // isChallenge = false;
                 twoPlayers.Clear();
                 StartNextTurn();
 
@@ -727,36 +727,36 @@ public class GameManager : MonoBehaviour
         diceValuePanelFour.SetActive(false);
 
     }
-    public List<int> meydanOkumaDiceValues = new List<int>();
-    public void MeydanOkumaDiceValue(int diceValue)
+    public List<int> challengeDiceValues = new List<int>();
+    public void ChallengeDiceValue(int diceValue)
     {
-        Debug.Log("Zar atýldý:  " + diceValue);
-        meydanOkumaDiceValues.Add(diceValue);
-        NickOnOff.Instance.currentPlMeydanOkuma(CardEvent.instance.selectedPlayers[1].playerIndex);
+        Debug.Log("Dice rolled: " + diceValue);
+        challengeDiceValues.Add(diceValue);
+        NickOnOff.Instance.currentPlayerChallenge(CardEvent.instance.selectedPlayers[1].playerIndex);
         SetCameraTarget(CardEvent.instance.selectedPlayers[1].playerIndex);
         SelectedPlayerChange(CardEvent.instance.selectedPlayers[1].playerIndex);
-        if (meydanOkumaDiceValues.Count >= 2)
+        if (challengeDiceValues.Count >= 2)
         {
 
 
-            if (meydanOkumaDiceValues[0] == meydanOkumaDiceValues[1])
+            if (challengeDiceValues[0] == challengeDiceValues[1])
             {
-                meydanOkumaDiceValues.RemoveAt(1);
-                StartCoroutine(Diced.Instance.MeydanOkumaRollDice());
+                challengeDiceValues.RemoveAt(1);
+                StartCoroutine(Diced.Instance.ChallengeRollDice());
             }
             else
             {
-                if (meydanOkumaDiceValues[0] > meydanOkumaDiceValues[1])
+                if (challengeDiceValues[0] > challengeDiceValues[1])
                 {
-                    CardEvent.instance.selectedPlayers[1].BckMove(meydanOkumaDiceValues[1]);
+                    CardEvent.instance.selectedPlayers[1].BckMove(challengeDiceValues[1]);
                 }
-                else if (meydanOkumaDiceValues[0] < meydanOkumaDiceValues[1])
+                else if (challengeDiceValues[0] < challengeDiceValues[1])
                 {
-                    CardEvent.instance.selectedPlayers[0].BckMove(meydanOkumaDiceValues[0]);
+                    CardEvent.instance.selectedPlayers[0].BckMove(challengeDiceValues[0]);
                 }
 
-                // meydanOkumaDiceValues.Clear();
-                // isMeydanOkuma = false;
+                // challengeDiceValues.Clear();
+                // isChallenge = false;
                 CardEvent.instance.selectedPlayers.Clear();
             }
 
@@ -764,13 +764,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ZarAtButton()
+    public void RollDiceButton()
     {
         buttonText.SetActive(false);
         dice.SetActive(true);
-        if (isMeydanOkuma)
+        if (isChallenge)
         {
-            StartCoroutine(Diced.Instance.MeydanOkumaRollDice());
+            StartCoroutine(Diced.Instance.ChallengeRollDice());
         }
         else if (twoPlayers.Count >= 2)
         {
