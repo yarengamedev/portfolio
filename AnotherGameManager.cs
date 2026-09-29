@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
     public int currentPlayer;
     public int diceSide = 0;
 
-
-
     public GameObject isTwoPlayerPanel;
 
     public GameObject twoPlayerPanel;
@@ -50,7 +48,6 @@ public class GameManager : MonoBehaviour
     public GameObject p3turtle;
     public GameObject p4turtle;
 
-
     public GameObject p1redcard;
     public GameObject p2redcard;
     public GameObject p3redcard;
@@ -65,7 +62,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI diceValueTextTwo;
     public TextMeshProUGUI diceValueTextThree;
     public TextMeshProUGUI diceValueTextFour;
-
 
     public GameObject p1jail;
     public GameObject p2jail;
@@ -153,12 +149,6 @@ public class GameManager : MonoBehaviour
     {
         buttonSound.Play();
     }
-
-    public void Call()
-    {
-
-    }
-
     public void SetCameraTarget(int cameraIndex)
     {
         foreach (CinemachineVirtualCamera cam in cameras)
@@ -169,7 +159,6 @@ public class GameManager : MonoBehaviour
 
         diceButton.interactable = true;
     }
-
 
     public void StartNextTurn()
     {
@@ -201,45 +190,6 @@ public class GameManager : MonoBehaviour
 
         PlayersAnim();
         NickOnOff.Instance.currentPl();
-        //if (players[0].skipTurn == true)
-        //{
-        //    p1redcard.SetActive(true);
-        //}
-
-        //else if (players[0].skipTurn == false)
-        //{
-        //    p1redcard.SetActive(false);
-        //}
-
-        //if (players[1].skipTurn == true)
-        //{
-        //    p2redcard.SetActive(true);
-        //}
-
-        //else if (players[1].skipTurn == false)
-        //{
-        //    p2redcard.SetActive(false);
-        //}
-
-        //if (players[2].skipTurn == true)
-        //{
-        //    p3redcard.SetActive(true);
-        //}
-
-        //else if (players[2].skipTurn == false)
-        //{
-        //    p3redcard.SetActive(false);
-        //}
-
-        //if (players[3].skipTurn == true)
-        //{
-        //    p4redcard.SetActive(true);
-        //}
-
-        //else if (players[3].skipTurn == false)
-        //{
-        //    p4redcard.SetActive(false);
-        //}
 
         if (players[currentPlayer].isSuspended == true)
         {
@@ -299,7 +249,6 @@ public class GameManager : MonoBehaviour
         if (players[currentPlayer].isTwoPlayer == true)
         {
             PlayersAnim();
-            //StartCoroutine(Diced.Instance.RollDiceforTwoPlayer);
             diceValues[diceValuesIndex] = (int)result;
             diceValuesIndex--;
             currentPlayer = twoPlayers[0].playerIndex;
@@ -329,16 +278,12 @@ public class GameManager : MonoBehaviour
                     twoPlayers.Clear();
                 }
 
-
-
-
                 diceValuesIndex = 1;
                 currentPlayer = twoPlayers[1].playerIndex;
                 twoPlayers[0].isTwoPlayer = false;
                 twoPlayers[1].isTwoPlayer = false;
                 twoPlayers.Clear();
             }
-            // StartNextTurn();
         }
 
         else if (players[currentPlayer].onTurtle == true)
@@ -408,62 +353,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //public void JailPanel()
-    //{
-    //    if (players[0].inJail == true)
-    //    {
-    //        p1jail.SetActive(true);
-    //    }
-
-    //    else if (players[0].inJail == false)
-    //    {
-    //        p1jail.SetActive(false);
-    //    }
-
-    //    if (players[1].inJail == true)
-    //    {
-    //        p2jail.SetActive(true);
-    //    }
-
-    //    else if (players[1].inJail == false)
-    //    {
-    //        p2jail.SetActive(false);
-    //    }
-
-    //    if (players[2].inJail == true)
-    //    {
-    //        p3jail.SetActive(true);
-    //    }
-
-    //    else if (players[2].inJail == false)
-    //    {
-    //        p3jail.SetActive(false);
-    //    }
-
-    //    if (players[3].inJail == true)
-    //    {
-    //        p4jail.SetActive(true);
-    //    }
-
-    //    else if (players[3].inJail == false)
-    //    {
-    //        p4jail.SetActive(false);
-    //    }
-    //}
-
     public void ActiveTwoPanel()
     {
-
 
         panelSound.Play();
         isTwoPlayerPanel.SetActive(true);
 
-
         isTwoPlayerPanel.GetComponent<Animator>().Play("panelAnimator");
 
     }
-
-
 
     public void TwoPlayersSameBlock(List<PlayerMovement> players)
     {
@@ -488,9 +386,6 @@ public class GameManager : MonoBehaviour
         else
         {
 
-            //NickOnOff.Instance.currentPlayerChallenge(twoPlayers[0].playerIndex);
-            //SetCameraTarget(twoPlayers[0].playerIndex);
-            //SelectedPlayerChange(twoPlayers[0].playerIndex);
         }
 
     }
@@ -520,19 +415,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     public void CancelEscapeCard()
     {
         panelSound.Play();
         isTwoPlayerPanel.SetActive(true);
 
-
         isTwoPlayerPanel.transform.position = new Vector3(isTwoPlayerPanel.transform.position.x, Screen.height, isTwoPlayerPanel.transform.position.z);
 
-        
         isTwoPlayerPanel.transform.localScale = Vector3.zero;
 
-       
         LeanTween.moveY(isTwoPlayerPanel, Screen.height * 0.5f, 0.5f)
             .setEaseOutBounce()
             .setOnComplete(() =>
@@ -540,7 +431,6 @@ public class GameManager : MonoBehaviour
                
             });
 
-      
         LeanTween.scale(isTwoPlayerPanel, Vector3.one, 0.5f)
             .setEase(LeanTweenType.easeOutCubic);
     }
@@ -555,18 +445,6 @@ public class GameManager : MonoBehaviour
         LeanTween.scale(players[playerIndex].gameObject, Vector3.one * 0.633135736f, 0.5f).setLoopPingPong();
     }
     public bool isChallenge = false;
-    //public void TwoPlayerSelect(List<PlayerMovement> selectedPlayers)
-    //{
-    //    if (selectedPlayers.Count == 2)
-    //    {
-    //        twoPlayerPanel.SetActive(false);
-    //        isChallenge = true;
-    //        NickOnOff.Instance.currentPlayerChallenge(selectedPlayers[0].playerIndex);
-    //        SetCameraTarget(selectedPlayers[0].playerIndex);
-    //        SelectedPlayerChange(selectedPlayers[0].playerIndex);
-
-    //    }
-    //}
 
     public void PrintDiceValues()
     {
@@ -617,15 +495,12 @@ public class GameManager : MonoBehaviour
             Diced.Instance.TwoDeneme();
         }
 
-        
     }
 
     public void SameBlockDiceValue(int diceValue)
     {
         Debug.Log("Dice rolled: " + diceValue);
         challengeDiceValues.Add(diceValue);
-       // NickOnOff.Instance.currentPlayerChallenge(twoPlayers[1].playerIndex);
-        //SetCameraTarget(twoPlayers[1].playerIndex);
         SelectedPlayerChange(twoPlayers[1].playerIndex);
 
         if (twoPlayers.Count >= 2)
@@ -675,7 +550,6 @@ public class GameManager : MonoBehaviour
         if (challengeDiceValues.Count >= 2)
         {
 
-
             for (int i = 0; i < twoPlayers.Count; i++)
             {
                 twoPlayers[i].isTwoPlayer = false;
@@ -701,16 +575,11 @@ public class GameManager : MonoBehaviour
                 }
 
                 challengeDiceValues.Clear();
-                // isChallenge = false;
                 twoPlayers.Clear();
                 StartNextTurn();
 
                 Invoke("CloseDiceValues", 2f);
             }
-
-            //  StartNextTurn();
-
-
 
         }
     }
@@ -738,7 +607,6 @@ public class GameManager : MonoBehaviour
         if (challengeDiceValues.Count >= 2)
         {
 
-
             if (challengeDiceValues[0] == challengeDiceValues[1])
             {
                 challengeDiceValues.RemoveAt(1);
@@ -755,12 +623,9 @@ public class GameManager : MonoBehaviour
                     CardEvent.instance.selectedPlayers[0].BckMove(challengeDiceValues[0]);
                 }
 
-                // challengeDiceValues.Clear();
-                // isChallenge = false;
                 CardEvent.instance.selectedPlayers.Clear();
             }
 
-            //  StartNextTurn();
         }
     }
 
