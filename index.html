@@ -224,6 +224,55 @@
   body.no-amb .amb .on{display:none}
   body.no-amb .amb .off{display:inline}
 
+
+  /* top availability bar */
+  .topbar{position:fixed;inset:0 0 auto;z-index:60;height:38px;display:flex;align-items:center;background:rgba(7,7,11,.72);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--stroke);font-family:var(--mono);font-size:12px;color:var(--text-2)}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%}
+  .topbar b{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:500}
+  .topbar b::before{content:"";width:7px;height:7px;border-radius:50%;background:#3ee08f;box-shadow:0 0 10px #3ee08f;animation:blink 2s infinite}
+  .topbar span.sep{color:var(--muted)}
+  .topbar .right{color:var(--muted)}
+  .nav{top:38px}
+  .hero{padding-top:150px}
+
+  /* filters */
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin:-24px 0 34px}
+  .filters button{font:inherit;font-family:var(--mono);font-size:12.5px;padding:9px 15px;border-radius:999px;border:0;cursor:pointer;color:var(--text-2);background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--stroke);transition:.25s}
+  .filters button i{font-style:normal;color:var(--muted);margin-left:6px}
+  .filters button:hover{background:rgba(255,255,255,.1);color:#fff}
+  .filters button.on{background:#fff;color:#0b0b10}
+  .filters button.on i{color:#6a6a78}
+  .proj.hide{display:none}
+
+  /* systems / categories */
+  .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .cat{position:relative;padding:30px 28px 26px;border-radius:22px;overflow:hidden;transition:transform .4s var(--ease)}
+  .cat:hover{transform:translateY(-4px)}
+  .cat .n{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between}
+  .cat .n em{font-style:normal;padding:3px 9px;border-radius:6px;background:rgba(var(--a1),.16);color:rgb(var(--a1));transition:.6s}
+  .cat h3{font-size:23px;margin:22px 0 10px}
+  .cat p{font-size:15px;color:var(--text-2)}
+  .cat .tg{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px}
+  .cat .tg span{font-family:var(--mono);font-size:11.5px;padding:4px 9px;border-radius:6px;background:rgba(255,255,255,.05);color:var(--text-2)}
+
+  /* faq */
+  .faq{display:grid;gap:12px;max-width:860px}
+  .faq details{border-radius:18px;padding:0 24px;overflow:hidden}
+  .faq summary{cursor:pointer;list-style:none;padding:22px 0;font-family:'Bricolage Grotesque';font-weight:600;font-size:19px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-family:var(--mono);font-size:22px;color:rgb(var(--a1));transition:transform .3s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq p{padding:0 0 24px;color:var(--text-2);font-size:16px;max-width:70ch}
+
+  /* proof / verify */
+  .proof{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pf{display:flex;align-items:center;gap:16px;padding:22px;border-radius:18px;transition:transform .3s var(--ease)}
+  .pf:hover{transform:translateY(-3px)}
+  .pf .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(var(--a1),.15);color:rgb(var(--a1));flex:none;font-family:var(--mono);font-size:13px;font-weight:600;transition:.6s}
+  .pf small{display:block;font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-bottom:3px}
+  .pf b{font-size:16px;font-weight:600}
+  .pf .go{margin-left:auto;color:var(--muted)}
+
   /* modal */
   .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(3,3,6,.72);backdrop-filter:blur(14px)}
   .modal.open{display:flex;animation:fade .3s}
@@ -254,6 +303,8 @@
   .reveal.in{opacity:1;transform:none}
 
   @media (max-width:1000px){
+    .cats,.proof{grid-template-columns:1fr}
+    .topbar .right{display:none}
     .hero{min-height:0;padding-top:120px}
     .hero-grid,.about,.modal-box,.skills-grid{grid-template-columns:1fr}
     .showreel{transform:none}
@@ -289,11 +340,18 @@
 <canvas id="bg" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 
+<div class="topbar">
+  <div class="wrap">
+    <span><b>Open to work</b> <span class="sep">·</span> full-time, contract &amp; commissions <span class="sep">·</span> remote</span>
+    <span class="right">Unity &amp; Roblox Studio <span class="sep">·</span> Girne, Cyprus</span>
+  </div>
+</div>
 <header class="nav" id="nav">
   <div class="wrap">
     <a href="#top" class="logo"><img src="assets/avatar.jpg" alt="" />Yaren Yılmaz</a>
     <ul>
       <li><a href="#work">Projects</a></li>
+      <li><a href="#systems">Systems</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -357,8 +415,17 @@
         <p>Scroll through — the whole page takes on the colours of the game you're looking at, sampled live from the footage.</p>
       </div>
 
+      <div class="filters reveal" role="tablist">
+        <button class="on" data-f="all">All<i>6</i></button>
+        <button data-f="mobile">Mobile<i>4</i></button>
+        <button data-f="pc">PC<i>2</i></button>
+        <button data-f="multi">Multiplayer<i>1</i></button>
+        <button data-f="3d">3D<i>2</i></button>
+        <button data-f="2d">2D<i>3</i></button>
+      </div>
+
       <div class="projects">
-        <article class="proj glass reveal" data-id="fluffy" data-pal="#ff9a6b,#7a5cc7,#2b3f7a">
+        <article class="proj glass reveal" data-id="fluffy" data-tags="mobile 2d" data-pal="#ff9a6b,#7a5cc7,#2b3f7a">
           <div class="shot">
             <div class="badge"><i></i>GAMEPLAY</div>
             <div class="frame">
@@ -380,7 +447,7 @@
           </div>
         </article>
 
-        <article class="proj flip glass reveal" data-id="boomerang" data-pal="#3fb34f,#f2c14e,#3a7bd5">
+        <article class="proj flip glass reveal" data-id="boomerang" data-tags="mobile 3d" data-pal="#3fb34f,#f2c14e,#3a7bd5">
           <div class="shot">
             <div class="badge"><i></i>SCREENSHOTS</div>
             <div class="frame">
@@ -402,7 +469,7 @@
           </div>
         </article>
 
-        <article class="proj glass reveal" data-id="dysphrenia" data-pal="#4a5f9e,#9fb3ea,#1a2238">
+        <article class="proj glass reveal" data-id="dysphrenia" data-tags="pc 3d" data-pal="#4a5f9e,#9fb3ea,#1a2238">
           <div class="shot">
             <div class="badge"><i></i>GAMEPLAY</div>
             <div class="frame">
@@ -424,7 +491,7 @@
         </article>
 
         <div class="mini">
-          <article class="proj glass reveal" data-id="tumble" data-pal="#ff9ec7,#8fd3e6,#b58cff">
+          <article class="proj glass reveal" data-id="tumble" data-tags="mobile multi" data-pal="#ff9ec7,#8fd3e6,#b58cff">
             <div class="shot">
               <div class="badge"><i></i>UI DEMO</div>
               <div class="frame bare">
@@ -440,7 +507,7 @@
             </div>
           </article>
 
-          <article class="proj glass reveal" data-id="cat" data-pal="#a44cff,#ff5fa2,#5a22c0">
+          <article class="proj glass reveal" data-id="cat" data-tags="mobile 2d" data-pal="#a44cff,#ff5fa2,#5a22c0">
             <div class="shot">
               <div class="badge"><i></i>GAMEPLAY</div>
               <div class="frame bare">
@@ -455,7 +522,7 @@
             </div>
           </article>
 
-          <article class="proj glass reveal" data-id="g2048" data-pal="#2d6cdf,#7ab8ff,#ff9eb0">
+          <article class="proj glass reveal" data-id="g2048" data-tags="pc 2d" data-pal="#2d6cdf,#7ab8ff,#ff9eb0">
             <div class="shot">
               <div class="badge"><i></i>GAMEPLAY</div>
               <div class="frame">
@@ -519,6 +586,122 @@
           <h3>Multi‑engine, multi‑language</h3>
           <p>At home in both Unity and Roblox Studio, writing C#, Lua and C++. I pick up new tools fast and adapt to whatever stack your team uses.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="systems" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">What I build</div>
+          <h2>The systems <span class="grad">behind the games.</span></h2>
+        </div>
+        <p>Every game on this page runs on these. Point me at any one of them and I can plug into your project.</p>
+      </div>
+      <div class="cats">
+        <div class="cat glass reveal">
+          <div class="n"><span>01</span><em>core</em></div>
+          <h3>Real-time multiplayer</h3>
+          <p>Custom room systems, matchmaking and server-authoritative state sync — built from scratch, not from a template.</p>
+          <div class="tg"><span>Rooms</span><span>Matchmaking</span><span>State sync</span><span>Netcode</span></div>
+        </div>
+        <div class="cat glass reveal">
+          <div class="n"><span>02</span><em>core</em></div>
+          <h3>Gameplay systems</h3>
+          <p>Core loops, player controllers, abilities, turn systems and enemy AI that actually feels fair to play against.</p>
+          <div class="tg"><span>Game loops</span><span>Enemy AI</span><span>Turn systems</span><span>Controllers</span></div>
+        </div>
+        <div class="cat glass reveal">
+          <div class="n"><span>03</span><em>systems</em></div>
+          <h3>Data &amp; progression</h3>
+          <p>Saving that survives crashes: inventories, levels, currencies and leaderboards with safe read/write flows.</p>
+          <div class="tg"><span>Saving</span><span>Inventories</span><span>Leaderboards</span></div>
+        </div>
+        <div class="cat glass reveal">
+          <div class="n"><span>04</span><em>systems</em></div>
+          <h3>Monetization</h3>
+          <p>Shops, in-game currencies, rewarded ads and Game Passes wired into the loop without ruining the fun.</p>
+          <div class="tg"><span>Rewarded ads</span><span>Shops</span><span>Game Passes</span></div>
+        </div>
+        <div class="cat glass reveal">
+          <div class="n"><span>05</span><em>polish</em></div>
+          <h3>UI / UX</h3>
+          <p>Menus, HUDs and shops designed in Figma, built and animated in-engine, laid out mobile-first.</p>
+          <div class="tg"><span>Figma</span><span>Unity UI</span><span>Animation</span><span>Localization</span></div>
+        </div>
+        <div class="cat glass reveal">
+          <div class="n"><span>06</span><em>polish</em></div>
+          <h3>Performance</h3>
+          <p>Frame budgets, draw calls and memory tuned so the game runs on the cheap phones most players actually own.</p>
+          <div class="tg"><span>Profiling</span><span>Mobile</span><span>Optimization</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" style="padding-top:40px">
+    <div class="wrap">
+      <div class="head reveal">
+        <div>
+          <div class="kicker">Good to know</div>
+          <h2>Questions studios ask me.</h2>
+        </div>
+      </div>
+      <div class="faq">
+        <details class="glass reveal">
+          <summary>Do you work remotely?</summary>
+          <p>Yes — remotely and full-time. I'm based in Girne, Cyprus (UTC+3) and work with teams across Europe and the US. I'm used to async updates, shared boards and clear written handovers.</p>
+        </details>
+        <details class="glass reveal">
+          <summary>Which engines and languages do you use?</summary>
+          <p>Unity with C# and Roblox Studio with Lua/Luau are my main stacks. I also write C++ and HTML, and I use Git on every project.</p>
+        </details>
+        <details class="glass reveal">
+          <summary>Can you join a project that's already in progress?</summary>
+          <p>That's a large part of what I do. I read the existing code first, match its structure and conventions, and start with small, reviewable changes before touching core systems.</p>
+        </details>
+        <details class="glass reveal">
+          <summary>What does working with you look like?</summary>
+          <p>We agree on scope and milestones, then I send playable builds as I go — not just status messages. You always see the real thing running.</p>
+        </details>
+        <details class="glass reveal">
+          <summary>Are you open to a paid test task?</summary>
+          <p>Yes. A small paid task is often the fastest way for a studio to see how I work, and it removes the risk of a long interview process.</p>
+        </details>
+        <details class="glass reveal">
+          <summary>Do you do full-time roles or only commissions?</summary>
+          <p>Both. I'm open to full-time positions, long-term contracts and one-off commissions.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="verify" style="padding-top:20px;padding-bottom:40px">
+    <div class="wrap">
+      <div class="head reveal" style="margin-bottom:34px">
+        <div>
+          <div class="kicker">Check me out</div>
+          <h2>Where to verify my work.</h2>
+        </div>
+      </div>
+      <div class="proof">
+        <a class="pf glass reveal" href="https://www.upwork.com/freelancers/~0150732f35efcf262f" target="_blank" rel="noopener">
+          <span class="ic">UW</span>
+          <span><small>Freelance profile &amp; work history</small><b>Upwork</b></span>
+          <span class="go">↗</span>
+        </a>
+        <a class="pf glass reveal" href="https://www.linkedin.com/in/yaren-y%C4%B1lmaz-706558368/" target="_blank" rel="noopener">
+          <span class="ic">in</span>
+          <span><small>Experience &amp; education</small><b>LinkedIn</b></span>
+          <span class="go">↗</span>
+        </a>
+        <a class="pf glass reveal" href="https://create.roblox.com/talent/creators/11701928463" target="_blank" rel="noopener">
+          <span class="ic">RB</span>
+          <span><small>Creator page &amp; skills</small><b>Roblox Talent Hub</b></span>
+          <span class="go">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -898,6 +1081,14 @@ cards.forEach(c=>{
   });
   c.addEventListener('click',e=>{if(!e.target.closest('a'))openP(c)});
 });
+
+/* ---------- project filters ---------- */
+document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+  const f=b.dataset.f;
+  cards.forEach(c=>c.classList.toggle('hide',f!=='all'&&!c.dataset.tags.split(' ').includes(f)));
+  updateFocus();
+}));
 
 /* ---------- modal ---------- */
 const modal=document.getElementById('modal'),stage=document.getElementById('stage'),thumbs=document.getElementById('thumbs');
